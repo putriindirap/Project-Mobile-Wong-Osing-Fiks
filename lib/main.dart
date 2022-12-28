@@ -7,7 +7,7 @@ import 'package:flutter_pbl/theme.dart';
 
 void main() async {
   runApp(MaterialApp(
-      title: "KOSTin",
+      title: "WongOsing",
       theme: theme(),
       initialRoute: LoginScreen.routeName,
       routes: routes,

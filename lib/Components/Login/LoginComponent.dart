@@ -26,6 +26,7 @@ class _LoginComponent extends State<LoginComponent> {
                 SizedBox(height: SizeConfig.screenHeight * 0.04,
                 ),
                 SimpleShadow(
+                  // ignore: sort_child_properties_last
                   child: Image.asset("assets/kostin.png",
                   height: 150,
                   width: 202,

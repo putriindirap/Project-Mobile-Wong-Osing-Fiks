@@ -1,9 +1,14 @@
+
 import 'package:flutter/material.dart';
+
 import 'package:flutter_pbl/Components/custom_surfix_icon.dart';
+import 'package:get/get.dart';
 import 'package:flutter_pbl/Components/default_button_custome_color.dart';
 import 'package:flutter_pbl/size_config.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_pbl/utils/constants.dart';
 import 'package:flutter_pbl/Screens/Register/Registrasi.dart';
+import 'package:quickalert/quickalert.dart';
 
 class SignInForm extends StatefulWidget {
   @override
@@ -16,9 +21,11 @@ class _SignInFrom extends State<SignInForm> {
   String? username;
   String? password;
   bool? remember = false;
+  final TextEditingController txtUserName = new TextEditingController();
+  final TextEditingController txtPassword = new TextEditingController();
 
-  TextEditingController txtUserName = TextEditingController(),
-      txtPassword = TextEditingController();
+  // TextEditingController txtUserName = TextEditingController(),
+  //     txtPassword = TextEditingController();
 
   FocusNode focusNode =new FocusNode();
 
@@ -53,7 +60,9 @@ class _SignInFrom extends State<SignInForm> {
           DefaultButtonCustomeColor(
             color: kPrimaryColor,
             text: "MASUK",
-            press: () {},
+            press: () {
+this._dologin();
+            },
           ),
           SizedBox(
             height: 20,
@@ -105,4 +114,43 @@ class _SignInFrom extends State<SignInForm> {
         )),
       );
     }
+
+
+    // Pemanggilan API Login
+  Future _dologin() async {
+    if (txtUserName.text.isEmpty || txtPassword.text.isEmpty) {
+      QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          title: 'Oops...',
+          text: 'Sorry, something went wrong',
+      );
+      return;
+    }
+    // ProgressDialog progressDialog = ProgressDialog(context);
+    // progressDialog.style(message: "loading..");
+    // progressDialog.show();
+    final response = await http
+        .post(Uri.parse('http://localhost/kostin/public/api/login'), body: {
+      'email': txtUserName.text,
+      'password': txtPassword.text
+    }, headers: {
+      'Accept': 'application/json'
+    });
+    // progressDialog.hide();
+    if (response.statusCode == 200) {
+      // SpUtil.putBool("isLogin", true);
+      // SpUtil.putString("email", emailController.text);
+      // Get.offAndToNamed(Routes.HOME_INTI);
+    } else {
+      QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          title: 'Oops...',
+          text: 'Sorry, something went wrong',
+  );
+    }
+  }
+
+
   }
